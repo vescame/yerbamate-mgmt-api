@@ -51,7 +51,7 @@ public class YerbaMateController {
 
     @RequestMapping(value = "{yerba_id}/comments", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void addComment(@PathVariable Long yerba_id,
+    public void createComment(@PathVariable Long yerba_id,
                            @RequestBody @Valid Comment comment) throws YerbaNotFoundException {
         YerbaMate yerbaMate = yerbaMateRepository.findById(yerba_id)
                 .orElseThrow(YerbaNotFoundException::new);
