@@ -29,7 +29,7 @@ public class YerbaMateController {
 
     @RequestMapping(value = "{id}", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
-    public YerbaMate findAll(@PathVariable Long id) throws YerbaNotFoundException {
+    public YerbaMate findById(@PathVariable Long id) throws YerbaNotFoundException {
         return yerbaMateRepository.findById(id).orElseThrow(YerbaNotFoundException::new);
     }
 
