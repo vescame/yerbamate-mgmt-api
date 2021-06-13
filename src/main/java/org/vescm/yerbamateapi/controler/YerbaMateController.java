@@ -49,9 +49,9 @@ public class YerbaMateController {
                 .findById(id).orElseThrow(YerbaNotFoundException::new));
     }
 
-    @RequestMapping(path = "{yerba_id}/comments", method = RequestMethod.POST)
+    @RequestMapping(value = "{yerba_id}/comments", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void addComment(@RequestParam Long yerba_id,
+    public void addComment(@PathVariable Long yerba_id,
                            @RequestBody @Valid Comment comment) throws YerbaNotFoundException {
         YerbaMate yerbaMate = yerbaMateRepository.findById(yerba_id)
                 .orElseThrow(YerbaNotFoundException::new);
