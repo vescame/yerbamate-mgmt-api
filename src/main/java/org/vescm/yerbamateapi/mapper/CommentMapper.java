@@ -11,7 +11,7 @@ public interface CommentMapper {
     CommentMapper INSTANCE = Mappers.getMapper(CommentMapper.class);
 
     Comment fromResponseToModel(CommentResponse commentResponse);
-    Comment fromResquestToModel(CommentRequest commentRequest);
+    Comment fromRequestToModel(CommentRequest commentRequest);
     CommentResponse fromModelToResponseDto(Comment comment);
     CommentRequest fromModelToRequestDto(Comment comment);
     CommentResponse fromRequestToResponseDto(CommentRequest commentRequest);

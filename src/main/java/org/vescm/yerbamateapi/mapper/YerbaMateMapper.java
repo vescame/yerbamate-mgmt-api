@@ -11,7 +11,7 @@ public interface YerbaMateMapper {
     YerbaMateMapper INSTANCE = Mappers.getMapper(YerbaMateMapper.class);
 
     YerbaMate fromResponseToModel(YerbaMateResponse YerbaMateResponse);
-    YerbaMate fromResquestToModel(YerbaMateRequest yerbaMateRequest);
+    YerbaMate fromRequestToModel(YerbaMateRequest yerbaMateRequest);
     YerbaMateResponse fromModelToResponseDto(YerbaMate yerbaMate);
     YerbaMateRequest fromModelToRequestDto(YerbaMate yerbaMate);
     YerbaMateResponse fromResponseToRequestDto(YerbaMateRequest yerbaMateRequest);
