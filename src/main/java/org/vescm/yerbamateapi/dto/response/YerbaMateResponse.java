@@ -1,6 +1,6 @@
 package org.vescm.yerbamateapi.dto.response;
 
-import org.vescm.yerbamateapi.model.YerbaMateType;
+import org.vescm.yerbamateapi.enums.YerbaMateType;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

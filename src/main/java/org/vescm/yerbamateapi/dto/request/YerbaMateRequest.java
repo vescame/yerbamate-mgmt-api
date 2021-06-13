@@ -9,7 +9,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-import org.vescm.yerbamateapi.model.YerbaMateType;
+import org.vescm.yerbamateapi.enums.YerbaMateType;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

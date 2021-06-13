@@ -1,4 +1,4 @@
-package org.vescm.yerbamateapi.model;
+package org.vescm.yerbamateapi.enums;
 
 public enum YerbaMateType {
     ARGENTINIAN("Argentinian"),
