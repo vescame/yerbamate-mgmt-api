@@ -27,6 +27,12 @@ public class YerbaMateController {
         return yerbaMateRepository.findAll();
     }
 
+    @RequestMapping(value = "{id}", method = RequestMethod.GET)
+    @ResponseStatus(HttpStatus.OK)
+    public YerbaMate findAll(@PathVariable Long id) throws YerbaNotFoundException {
+        return yerbaMateRepository.findById(id).orElseThrow(YerbaNotFoundException::new);
+    }
+
     @RequestMapping(method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     public YerbaMate create(@RequestBody @Valid YerbaMate yerbaMate) {
@@ -38,7 +44,8 @@ public class YerbaMateController {
     public YerbaMate update(@PathVariable Long id,
                             @RequestBody @Valid YerbaMate yerbaMate)
             throws YerbaNotFoundException {
-        yerbaMateRepository.findById(id).orElseThrow(YerbaNotFoundException::new);
+        YerbaMate existentYerbaMate = yerbaMateRepository.findById(id).orElseThrow(YerbaNotFoundException::new);
+        yerbaMate.setId(existentYerbaMate.getId());
         return yerbaMateRepository.save(yerbaMate);
     }
 
