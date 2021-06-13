@@ -33,9 +33,9 @@ public class YerbaMateController {
         return yerbaMateRepository.save(yerbaMate);
     }
 
-    @RequestMapping(method = RequestMethod.PUT, params = "{id}")
+    @RequestMapping(value = "{id}", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.OK)
-    public YerbaMate update(@RequestParam Long id,
+    public YerbaMate update(@PathVariable Long id,
                             @RequestBody @Valid YerbaMate yerbaMate)
             throws YerbaNotFoundException {
         yerbaMateRepository.findById(id).orElseThrow(YerbaNotFoundException::new);
