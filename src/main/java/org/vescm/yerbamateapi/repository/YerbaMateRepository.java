@@ -6,4 +6,5 @@ import org.vescm.yerbamateapi.model.YerbaMate;
 
 @Repository
 public interface YerbaMateRepository extends JpaRepository<YerbaMate, Long> {
+    boolean existsByName(String name);
 }

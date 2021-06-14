@@ -14,6 +14,6 @@ public interface YerbaMateMapper {
     YerbaMate fromRequestToModel(YerbaMateRequest yerbaMateRequest);
     YerbaMateResponse fromModelToResponseDto(YerbaMate yerbaMate);
     YerbaMateRequest fromModelToRequestDto(YerbaMate yerbaMate);
-    YerbaMateResponse fromResponseToRequestDto(YerbaMateRequest yerbaMateRequest);
+    YerbaMateResponse fromRequestToResponseDto(YerbaMateRequest yerbaMateRequest);
     YerbaMateRequest fromResponseToRequestDto(YerbaMateResponse yerbaMateResponse);
 }

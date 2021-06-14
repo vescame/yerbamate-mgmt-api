@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import org.vescm.yerbamateapi.exception.YerbaNotFoundException;
 import org.vescm.yerbamateapi.model.Comment;
 import org.vescm.yerbamateapi.model.YerbaMate;
-import org.vescm.yerbamateapi.repository.YerbaMateRepository;
+import org.vescm.yerbamateapi.service.YerbaMateService;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -14,11 +14,11 @@ import java.util.List;
 @RestController
 @RequestMapping(value = "api/v1/yerbamate")
 public class YerbaMateController {
-    private final YerbaMateRepository yerbaMateRepository;
+    private final YerbaMateService yerbaMateService;
 
     @Autowired
-    public YerbaMateController(final YerbaMateRepository yerbaMateRepository) {
-        this.yerbaMateRepository = yerbaMateRepository;
+    public YerbaMateController(YerbaMateService yerbaMateService) {
+        this.yerbaMateService = yerbaMateService;
     }
 
     @RequestMapping(method = RequestMethod.GET)
@@ -35,8 +35,9 @@ public class YerbaMateController {
 
     @RequestMapping(method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
-    public YerbaMate create(@RequestBody @Valid YerbaMate yerbaMate) {
-        return yerbaMateRepository.save(yerbaMate);
+    public YerbaMateResponse create(@RequestBody @Valid YerbaMateRequest yerbaMate)
+            throws YerbaNameAlreadyExistsException {
+        return yerbaMateService.create(yerbaMate);
     }
 
     @RequestMapping(value = "{id}", method = RequestMethod.PUT)
