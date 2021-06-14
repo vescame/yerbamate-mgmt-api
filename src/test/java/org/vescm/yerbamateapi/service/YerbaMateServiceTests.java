@@ -10,10 +10,10 @@ import org.vescm.yerbamateapi.builder.YerbaMateBuilder;
 import org.vescm.yerbamateapi.dto.request.YerbaMateRequest;
 import org.vescm.yerbamateapi.dto.response.YerbaMateResponse;
 import org.vescm.yerbamateapi.exception.YerbaNameAlreadyExistsException;
+import org.vescm.yerbamateapi.exception.YerbaNotFoundException;
 import org.vescm.yerbamateapi.model.YerbaMate;
 import org.vescm.yerbamateapi.repository.YerbaMateRepository;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Optional;
 
@@ -69,4 +69,32 @@ public class YerbaMateServiceTests {
 
         Assertions.assertEquals(Collections.singletonList(response), yerbaMateService.findAll());
     }
+
+    @Test
+    void testGivenYerbaRequestThenFindByIdShouldReturn() throws YerbaNotFoundException {
+        YerbaMate model = YerbaMateBuilder.builder().build().toEntity();
+        YerbaMateRequest request = YerbaMateBuilder.builder().build().toRequestDto();
+        YerbaMateResponse response = YerbaMateBuilder.builder().build().toResponseDto();
+
+        Assertions.assertDoesNotThrow(() -> {
+            yerbaMateService.create(request);
+        });
+
+         when(yerbaMateRepository.findById(1L)).thenReturn(Optional.of(model));
+
+        YerbaMateResponse actual = yerbaMateService.findById(1L);
+
+        Assertions.assertEquals(response, actual);
+    }
+
+    @Test
+    void testGivenYerbaRequestThenShouldThrowNotFoundException() {
+        when(yerbaMateRepository.findById(1L)).thenReturn(Optional.empty());
+
+        Assertions.assertThrows(YerbaNotFoundException.class, () -> {
+            yerbaMateService.findById(1L);
+        });
+    }
+
+
 }

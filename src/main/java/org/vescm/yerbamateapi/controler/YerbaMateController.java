@@ -8,7 +8,6 @@ import org.vescm.yerbamateapi.dto.response.YerbaMateResponse;
 import org.vescm.yerbamateapi.exception.YerbaNameAlreadyExistsException;
 import org.vescm.yerbamateapi.exception.YerbaNotFoundException;
 import org.vescm.yerbamateapi.model.Comment;
-import org.vescm.yerbamateapi.model.YerbaMate;
 import org.vescm.yerbamateapi.service.YerbaMateService;
 
 import javax.validation.Valid;
@@ -32,8 +31,8 @@ public class YerbaMateController {
 
     @RequestMapping(value = "{id}", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
-    public YerbaMate findById(@PathVariable Long id) throws YerbaNotFoundException {
-        return yerbaMateRepository.findById(id).orElseThrow(YerbaNotFoundException::new);
+    public YerbaMateResponse findById(@PathVariable Long id) throws YerbaNotFoundException {
+        return yerbaMateService.findById(id);
     }
 
     @RequestMapping(method = RequestMethod.POST)

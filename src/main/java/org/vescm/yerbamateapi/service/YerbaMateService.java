@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.vescm.yerbamateapi.dto.request.YerbaMateRequest;
 import org.vescm.yerbamateapi.dto.response.YerbaMateResponse;
 import org.vescm.yerbamateapi.exception.YerbaNameAlreadyExistsException;
+import org.vescm.yerbamateapi.exception.YerbaNotFoundException;
 import org.vescm.yerbamateapi.mapper.YerbaMateMapper;
 import org.vescm.yerbamateapi.model.Comment;
 import org.vescm.yerbamateapi.model.YerbaMate;
@@ -48,8 +49,12 @@ public class YerbaMateService {
                 .collect(Collectors.toList());
     }
 
-    public Optional<YerbaMateResponse> findById(Long id) {
-        return null;
+    public YerbaMateResponse findById(Long id) throws YerbaNotFoundException {
+        Optional<YerbaMate> found = yerbaMateRepository.findById(id);
+        if (found.isEmpty()) {
+            throw new YerbaNotFoundException();
+        }
+        return yerbaMateMapper.fromModelToResponseDto(found.get());
     }
 
     public YerbaMateResponse update(YerbaMateRequest yerbaMate) {
