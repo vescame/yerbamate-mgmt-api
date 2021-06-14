@@ -6,8 +6,13 @@ import org.vescm.yerbamateapi.dto.request.YerbaMateRequest;
 import org.vescm.yerbamateapi.dto.response.YerbaMateResponse;
 import org.vescm.yerbamateapi.exception.YerbaNameAlreadyExistsException;
 import org.vescm.yerbamateapi.mapper.YerbaMateMapper;
+import org.vescm.yerbamateapi.model.Comment;
 import org.vescm.yerbamateapi.model.YerbaMate;
 import org.vescm.yerbamateapi.repository.YerbaMateRepository;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class YerbaMateService {
@@ -17,6 +22,10 @@ public class YerbaMateService {
     @Autowired
     public YerbaMateService(final YerbaMateRepository yerbaMateRepository) {
         this.yerbaMateRepository = yerbaMateRepository;
+    }
+
+    public boolean exists(final Long id) {
+        return this.yerbaMateRepository.existsById(id);
     }
 
     public boolean existsByName(final String yerbaName) {
@@ -31,5 +40,27 @@ public class YerbaMateService {
         }
         YerbaMate saved = yerbaMateRepository.save(model);
         return yerbaMateMapper.fromModelToResponseDto(saved);
+    }
+
+    public List<YerbaMateResponse> findAll() {
+        return yerbaMateRepository.findAll().stream()
+                .map(yerbaMateMapper::fromModelToResponseDto)
+                .collect(Collectors.toList());
+    }
+
+    public Optional<YerbaMateResponse> findById(Long id) {
+        return null;
+    }
+
+    public YerbaMateResponse update(YerbaMateRequest yerbaMate) {
+        return null;
+    }
+
+    public void delete(Long id) {
+
+    }
+
+    public void createComment(Comment comment) {
+
     }
 }

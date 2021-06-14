@@ -13,6 +13,8 @@ import org.vescm.yerbamateapi.exception.YerbaNameAlreadyExistsException;
 import org.vescm.yerbamateapi.model.YerbaMate;
 import org.vescm.yerbamateapi.repository.YerbaMateRepository;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -45,5 +47,26 @@ public class YerbaMateServiceTests {
         Assertions.assertThrows(YerbaNameAlreadyExistsException.class, () -> {
             yerbaMateService.create(request);
         });
+    }
+
+    @Test
+    void testFindAllShouldReturnEmptyList() {
+        when(yerbaMateRepository.findAll()).thenReturn(Collections.emptyList());
+        Assertions.assertEquals(Collections.emptyList(), yerbaMateService.findAll());
+    }
+
+    @Test
+    void testGivenYerbaRequestThenShouldReturnSingletonList() {
+        YerbaMate model = YerbaMateBuilder.builder().build().toEntity();
+        YerbaMateRequest request = YerbaMateBuilder.builder().build().toRequestDto();
+        YerbaMateResponse response = YerbaMateBuilder.builder().build().toResponseDto();
+
+        Assertions.assertDoesNotThrow(() -> {
+            yerbaMateService.create(request);
+        });
+
+        when(yerbaMateRepository.findAll()).thenReturn(Collections.singletonList(model));
+
+        Assertions.assertEquals(Collections.singletonList(response), yerbaMateService.findAll());
     }
 }

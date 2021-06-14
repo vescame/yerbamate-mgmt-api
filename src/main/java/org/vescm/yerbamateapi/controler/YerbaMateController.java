@@ -3,6 +3,9 @@ package org.vescm.yerbamateapi.controler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.vescm.yerbamateapi.dto.request.YerbaMateRequest;
+import org.vescm.yerbamateapi.dto.response.YerbaMateResponse;
+import org.vescm.yerbamateapi.exception.YerbaNameAlreadyExistsException;
 import org.vescm.yerbamateapi.exception.YerbaNotFoundException;
 import org.vescm.yerbamateapi.model.Comment;
 import org.vescm.yerbamateapi.model.YerbaMate;
@@ -23,8 +26,8 @@ public class YerbaMateController {
 
     @RequestMapping(method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
-    public List<YerbaMate> findAll() {
-        return yerbaMateRepository.findAll();
+    public List<YerbaMateResponse> findAll() {
+        return yerbaMateService.findAll();
     }
 
     @RequestMapping(value = "{id}", method = RequestMethod.GET)
