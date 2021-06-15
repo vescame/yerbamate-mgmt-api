@@ -50,9 +50,9 @@ public class YerbaMateController {
         return yerbaMateService.update(id, yerbaMate);
     }
 
-    @RequestMapping(method = RequestMethod.DELETE)
+    @RequestMapping(value = "{id}", method = RequestMethod.DELETE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@RequestParam Long id) throws YerbaNotFoundException {
+    public void delete(@PathVariable Long id) throws YerbaNotFoundException {
         yerbaMateService.delete(id);
     }
 
