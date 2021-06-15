@@ -2,10 +2,12 @@ package org.vescm.yerbamateapi.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.vescm.yerbamateapi.dto.request.CommentRequest;
 import org.vescm.yerbamateapi.dto.request.YerbaMateRequest;
 import org.vescm.yerbamateapi.dto.response.YerbaMateResponse;
 import org.vescm.yerbamateapi.exception.YerbaNameAlreadyExistsException;
 import org.vescm.yerbamateapi.exception.YerbaNotFoundException;
+import org.vescm.yerbamateapi.mapper.CommentMapper;
 import org.vescm.yerbamateapi.mapper.YerbaMateMapper;
 import org.vescm.yerbamateapi.model.Comment;
 import org.vescm.yerbamateapi.model.YerbaMate;
@@ -19,6 +21,7 @@ import java.util.stream.Collectors;
 public class YerbaMateService {
     private final YerbaMateRepository yerbaMateRepository;
     private final YerbaMateMapper yerbaMateMapper = YerbaMateMapper.INSTANCE;
+    private final CommentMapper commentMapper = CommentMapper.INSTANCE;
 
     @Autowired
     public YerbaMateService(final YerbaMateRepository yerbaMateRepository) {
@@ -75,7 +78,15 @@ public class YerbaMateService {
                 .findById(id).orElseThrow(YerbaNotFoundException::new));
     }
 
-    public void createComment(Comment comment) {
+    public void createComment(Long yerbaId, CommentRequest commentRequest)
+            throws YerbaNotFoundException {
+        Comment comment = commentMapper.fromRequestToModel(commentRequest);
 
+        YerbaMate yerbaMate = yerbaMateRepository.findById(yerbaId)
+                .orElseThrow(YerbaNotFoundException::new);
+
+        yerbaMate.getComments().add(comment);
+
+        yerbaMateRepository.save(yerbaMate);
     }
 }

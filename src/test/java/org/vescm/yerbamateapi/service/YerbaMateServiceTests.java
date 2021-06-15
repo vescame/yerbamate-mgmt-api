@@ -7,10 +7,12 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.vescm.yerbamateapi.builder.YerbaMateBuilder;
+import org.vescm.yerbamateapi.dto.request.CommentRequest;
 import org.vescm.yerbamateapi.dto.request.YerbaMateRequest;
 import org.vescm.yerbamateapi.dto.response.YerbaMateResponse;
 import org.vescm.yerbamateapi.exception.YerbaNameAlreadyExistsException;
 import org.vescm.yerbamateapi.exception.YerbaNotFoundException;
+import org.vescm.yerbamateapi.model.Comment;
 import org.vescm.yerbamateapi.model.YerbaMate;
 import org.vescm.yerbamateapi.repository.YerbaMateRepository;
 
@@ -44,9 +46,8 @@ public class YerbaMateServiceTests {
 
         when(yerbaMateRepository.existsByName(model.getName())).thenReturn(true);
 
-        Assertions.assertThrows(YerbaNameAlreadyExistsException.class, () -> {
-            yerbaMateService.create(request);
-        });
+        Assertions.assertThrows(YerbaNameAlreadyExistsException.class,
+                () -> yerbaMateService.create(request));
     }
 
     @Test
@@ -91,9 +92,8 @@ public class YerbaMateServiceTests {
     void testGivenYerbaRequestThenShouldThrowNotFoundException() {
         when(yerbaMateRepository.findById(1L)).thenReturn(Optional.empty());
 
-        Assertions.assertThrows(YerbaNotFoundException.class, () -> {
-            yerbaMateService.findById(1L);
-        });
+        Assertions.assertThrows(YerbaNotFoundException.class,
+                () -> yerbaMateService.findById(1L));
     }
 
     @Test
@@ -117,9 +117,8 @@ public class YerbaMateServiceTests {
     @Test
     void testGivenInvalidYerbaRequestThenShouldThrowNotFoundException() {
         when(yerbaMateRepository.existsById(1L)).thenReturn(false);
-        Assertions.assertThrows(YerbaNotFoundException.class, () -> {
-            yerbaMateService.update(1L, any(YerbaMateRequest.class));
-        });
+        Assertions.assertThrows(YerbaNotFoundException.class,
+                () -> yerbaMateService.update(1L, any(YerbaMateRequest.class)));
     }
 
     @Test
@@ -129,16 +128,14 @@ public class YerbaMateServiceTests {
         when(yerbaMateRepository.existsById(1L)).thenReturn(true);
         when(yerbaMateRepository.existsByName(request.getName())).thenReturn(true);
 
-        Assertions.assertThrows(YerbaNameAlreadyExistsException.class, () -> {
-            yerbaMateService.update(1L, request);
-        });
+        Assertions.assertThrows(YerbaNameAlreadyExistsException.class,
+                () -> yerbaMateService.update(1L, request));
     }
 
     @Test
     void testGivenInvalidYerbaRequestThenDeleteShouldThrowNotFoundException() {
-        Assertions.assertThrows(YerbaNotFoundException.class, () -> {
-            yerbaMateService.delete(1L);
-        });
+        Assertions.assertThrows(YerbaNotFoundException.class,
+                () -> yerbaMateService.delete(1L));
     }
 
     @Test
@@ -151,9 +148,27 @@ public class YerbaMateServiceTests {
 
         when(yerbaMateRepository.findById(1L)).thenReturn(Optional.empty());
 
-        Assertions.assertThrows(YerbaNotFoundException.class, () -> {
-            yerbaMateService.delete(1L);
-        });
+        Assertions.assertThrows(YerbaNotFoundException.class,
+                () -> yerbaMateService.delete(1L));
     }
 
+    @Test
+    void testGivenInvalidCommentRequestThenShouldThrowNotFoundException() {
+        when(yerbaMateRepository.findById(1L)).thenReturn(Optional.empty());
+        Assertions.assertThrows(YerbaNotFoundException.class,
+                () -> yerbaMateService
+                        .createComment(1L, any(CommentRequest.class)));
+    }
+
+    @Test
+    void testGivenCreateCommentRequestThenShouldIncreaseModelsComments() throws YerbaNotFoundException {
+        YerbaMate model = YerbaMateBuilder.builder().build().toEntity();
+
+        when(yerbaMateRepository.findById(1L)).thenReturn(Optional.of(model));
+
+        yerbaMateService.createComment(1L, CommentRequest.builder().comment("test comment").build());
+
+        Assertions.assertNotEquals(1, model.getComments().size());
+        Assertions.assertEquals(2, model.getComments().size());
+    }
 }
