@@ -53,8 +53,7 @@ public class YerbaMateController {
     @RequestMapping(method = RequestMethod.DELETE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@RequestParam Long id) throws YerbaNotFoundException {
-        yerbaMateRepository.delete(yerbaMateRepository
-                .findById(id).orElseThrow(YerbaNotFoundException::new));
+        yerbaMateService.delete(id);
     }
 
     @RequestMapping(value = "{yerba_id}/comments", method = RequestMethod.POST)

@@ -125,10 +125,35 @@ public class YerbaMateServiceTests {
     @Test
     void testGivenInvalidYerbaRequestThenShouldThrowNameExistsException() {
         YerbaMateRequest request = YerbaMateBuilder.builder().build().toRequestDto();
+
         when(yerbaMateRepository.existsById(1L)).thenReturn(true);
         when(yerbaMateRepository.existsByName(request.getName())).thenReturn(true);
+
         Assertions.assertThrows(YerbaNameAlreadyExistsException.class, () -> {
             yerbaMateService.update(1L, request);
         });
     }
+
+    @Test
+    void testGivenInvalidYerbaRequestThenDeleteShouldThrowNotFoundException() {
+        Assertions.assertThrows(YerbaNotFoundException.class, () -> {
+            yerbaMateService.delete(1L);
+        });
+    }
+
+    @Test
+    void testDeleteYerbaThenShouldThrowNotFoundException() throws YerbaNotFoundException {
+        YerbaMate model = YerbaMateBuilder.builder().build().toEntity();
+
+        when(yerbaMateRepository.findById(1L)).thenReturn(Optional.of(model));
+
+        yerbaMateService.delete(1L);
+
+        when(yerbaMateRepository.findById(1L)).thenReturn(Optional.empty());
+
+        Assertions.assertThrows(YerbaNotFoundException.class, () -> {
+            yerbaMateService.delete(1L);
+        });
+    }
+
 }

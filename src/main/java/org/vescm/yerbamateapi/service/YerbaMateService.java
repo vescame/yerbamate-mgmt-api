@@ -70,8 +70,9 @@ public class YerbaMateService {
         return yerbaMateMapper.fromModelToResponseDto(model);
     }
 
-    public void delete(Long id) {
-
+    public void delete(Long id) throws YerbaNotFoundException {
+        yerbaMateRepository.delete(yerbaMateRepository
+                .findById(id).orElseThrow(YerbaNotFoundException::new));
     }
 
     public void createComment(Comment comment) {
