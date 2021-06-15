@@ -80,7 +80,7 @@ public class YerbaMateServiceTests {
             yerbaMateService.create(request);
         });
 
-         when(yerbaMateRepository.findById(1L)).thenReturn(Optional.of(model));
+        when(yerbaMateRepository.findById(1L)).thenReturn(Optional.of(model));
 
         YerbaMateResponse actual = yerbaMateService.findById(1L);
 
@@ -96,5 +96,39 @@ public class YerbaMateServiceTests {
         });
     }
 
+    @Test
+    void testGivenYerbaRequestThenShouldUpdateExistent()
+            throws YerbaNameAlreadyExistsException, YerbaNotFoundException {
+        YerbaMate model = YerbaMateBuilder.builder().build().toEntity();
+        model.setName("Yerba New");
 
+        YerbaMateRequest request = YerbaMateBuilder.builder().build().toRequestDto();
+
+        when(yerbaMateRepository.existsById(1L)).thenReturn(true);
+        when(yerbaMateRepository.save(any(YerbaMate.class))).thenReturn(model);
+
+        yerbaMateService.create(request);
+
+        YerbaMateResponse response = yerbaMateService.update(1L, request);
+
+        Assertions.assertEquals("Yerba New", response.getName());
+    }
+
+    @Test
+    void testGivenInvalidYerbaRequestThenShouldThrowNotFoundException() {
+        when(yerbaMateRepository.existsById(1L)).thenReturn(false);
+        Assertions.assertThrows(YerbaNotFoundException.class, () -> {
+            yerbaMateService.update(1L, any(YerbaMateRequest.class));
+        });
+    }
+
+    @Test
+    void testGivenInvalidYerbaRequestThenShouldThrowNameExistsException() {
+        YerbaMateRequest request = YerbaMateBuilder.builder().build().toRequestDto();
+        when(yerbaMateRepository.existsById(1L)).thenReturn(true);
+        when(yerbaMateRepository.existsByName(request.getName())).thenReturn(true);
+        Assertions.assertThrows(YerbaNameAlreadyExistsException.class, () -> {
+            yerbaMateService.update(1L, request);
+        });
+    }
 }

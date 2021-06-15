@@ -44,12 +44,10 @@ public class YerbaMateController {
 
     @RequestMapping(value = "{id}", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.OK)
-    public YerbaMate update(@PathVariable Long id,
-                            @RequestBody @Valid YerbaMate yerbaMate)
-            throws YerbaNotFoundException {
-        YerbaMate existentYerbaMate = yerbaMateRepository.findById(id).orElseThrow(YerbaNotFoundException::new);
-        yerbaMate.setId(existentYerbaMate.getId());
-        return yerbaMateRepository.save(yerbaMate);
+    public YerbaMateResponse update(@PathVariable Long id,
+                            @RequestBody @Valid YerbaMateRequest yerbaMate)
+            throws YerbaNotFoundException, YerbaNameAlreadyExistsException {
+        return yerbaMateService.update(id, yerbaMate);
     }
 
     @RequestMapping(method = RequestMethod.DELETE)

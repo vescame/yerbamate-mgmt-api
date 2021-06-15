@@ -57,8 +57,17 @@ public class YerbaMateService {
         return yerbaMateMapper.fromModelToResponseDto(found.get());
     }
 
-    public YerbaMateResponse update(YerbaMateRequest yerbaMate) {
-        return null;
+    public YerbaMateResponse update(Long id, YerbaMateRequest yerbaMateRequest)
+            throws YerbaNotFoundException, YerbaNameAlreadyExistsException {
+        if (!exists(id)) {
+            throw new YerbaNotFoundException();
+        }
+        if (existsByName(yerbaMateRequest.getName())) {
+            throw new YerbaNameAlreadyExistsException(yerbaMateRequest.getName());
+        }
+        YerbaMate model = yerbaMateRepository
+                .save(yerbaMateMapper.fromRequestToModel(yerbaMateRequest));
+        return yerbaMateMapper.fromModelToResponseDto(model);
     }
 
     public void delete(Long id) {
